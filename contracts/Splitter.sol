@@ -21,17 +21,8 @@ contract Splitter {
 
   function() payable { }
 
-  // function to get balance of an address, either a participant or of the contract itself.
-  function getBalance(address addressToCheck) constant returns (uint balance) {
-    return accounts[addressToCheck];
-  }
-
-  function getContractBalance() constant returns (uint) {
-    return this.balance;
-  }
-
   // function to send money to addresses
-  function sendMoney() payable returns (bool) {
+  function sendMoney() payable public returns (bool) {
     uint amount = msg.value;
     require(amount > 0);
     // might need some validation to ensure addresses are legit?
@@ -44,7 +35,7 @@ contract Splitter {
   }
 
   // could update so that user can specify how much they want to withdraw
-  function withdrawMoney() payable returns (bool) {
+  function withdrawMoney() payable public returns (bool) {
     msg.sender.transfer(accounts[msg.sender]);
     accounts[msg.sender] = 0;
     MoneyWithdrawn(msg.sender, msg.value);
@@ -52,7 +43,7 @@ contract Splitter {
   }
 
   // to kill the contract
-  function killContract() returns (bool){
+  function killContract() public returns (bool){
     require(msg.sender == owner);
     suicide(owner);
     ContractKilled();
